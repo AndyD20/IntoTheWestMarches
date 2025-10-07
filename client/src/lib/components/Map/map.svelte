@@ -20,6 +20,20 @@
   let lastX: number = 0;
   let lastY: number = 0;
 
+  // clamp the translation to the bounds of the image
+  function clampTranslation(): void {
+    if (!image || !container) return;
+    const rect: DOMRect = container.getBoundingClientRect();
+    const imageWidth: number = image.naturalWidth * zoom;
+    const imageHeight: number = image.naturalHeight * zoom;
+
+    const minX: number = (rect.width - imageWidth) - imageWidth * 0.2;
+    const minY: number = (rect.height - imageHeight) - imageHeight * 0.2;
+
+    translateX = Math.max(minX, Math.min((imageWidth * 0.2), translateX));
+    translateY = Math.max(minY, Math.min((imageHeight * 0.2), translateY));
+  }
+
   // Handle mouse wheel for zooming
   function handleWheel(event: WheelEvent): void {
     event.preventDefault();
@@ -64,6 +78,7 @@
     translateX += deltaX;
     translateY += deltaY;
 
+    clampTranslation();
     lastX = event.clientX;
     lastY = event.clientY;
   }

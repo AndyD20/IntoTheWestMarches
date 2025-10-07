@@ -15,7 +15,7 @@
     const mapProps = {
         src: MapImage,
         height: '800px',
-        minZoom: 0.5,
+        minZoom: 0.8,
         maxZoom: 3,
         initialZoom: 1
     };

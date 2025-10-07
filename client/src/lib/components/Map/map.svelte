@@ -117,7 +117,7 @@
 </script>
 
 <div
-  class="map-container"
+  class="map-container relative overflow-hidden select-none border-2 border-solid border-gray-400 bg-amber-50 active:cursor-grabbing"
   style="width: {width}; height: {height};"
   bind:this={container}
   on:wheel={handleWheel}
@@ -129,7 +129,7 @@
   <img
     {src}
     {alt}
-    class="map-image"
+    class="map-image block max-w-none max-h-none"
     style="transform: translate({translateX}px, {translateY}px) scale({zoom}); transform-origin: 0 0;"
     bind:this={image}
     draggable="false"
@@ -138,22 +138,7 @@
 </div>
 
 <style>
-  .map-container {
-    position: relative;
-    overflow: hidden;
-    border: 1px solid #ccc;
-    user-select: none;
-    background-color: #f5f5f5;
-  }
-
   .map-image {
-    display: block;
-    max-width: none;
-    max-height: none;
     transition: transform 0.1s ease-out;
-  }
-
-  .map-container:active {
-    cursor: grabbing !important;
   }
 </style>

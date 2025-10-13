@@ -14,9 +14,7 @@
 	let cameraX = $state(0);
 	let cameraY = $state(0);
 
-	let showMarker = $state(false);
-	let markerPosX = $state(0);
-	let markerPosY = $state(0);
+    let markers = $state([{}]);
 
 	const { renderer } = useThrelte();
 
@@ -45,9 +43,11 @@
 	};
 
 	const handleOnDblClick = (e) => {
-		markerPosX = e.point.x;
-		markerPosY = e.point.y;
-		showMarker = true;
+        let foo = {
+            posX: e.point.x,
+            posY: e.point.y,
+        } as Marker;
+		markers.push(foo);
 	};
 </script>
 
@@ -79,18 +79,15 @@
 	</T.Mesh>
 {/await}
 
-{#if showMarker}
-    <T.Mesh
-        onpointerover={(e) => console.log(e)}
-    >
+{#each markers as marker (`${marker.posX}, ${marker.posY}`)}
+    <T.Mesh>
         <SVG
             src={MapPinIcon}
             scale={0.005}
-            position.x={markerPosX - 0.06}
-            position.y={markerPosY + 0.12}
-            position.z={0.1}
+            position.x={marker.posX - 0.06}
+            position.y={marker.posY + 0.12}
+            position.z={0.0001}
 	    />
     </T.Mesh>
-
-{/if}
+{/each}
 

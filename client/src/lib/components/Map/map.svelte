@@ -3,6 +3,7 @@
 	import { useTexture, interactivity, SVG } from '@threlte/extras';
 	import WorldMap from '$lib/assets/The_Northern_Empire.png';
 	import MapPinIcon from '$lib/assets/map-pin.svg';
+    import type {Marker} from "$lib/interfaces/marker";
 
 	interactivity();
 

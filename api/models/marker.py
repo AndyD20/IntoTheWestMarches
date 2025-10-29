@@ -25,8 +25,8 @@ class Marker(db.Model):
         """Serializes marker data to a dictionary"""
         return {
             'id': self.id,
-            'posX': self.pos_x,
-            'posY': self.pos_y
+            'pos_x': self.pos_x,
+            'pos_y': self.pos_y
         }
 
     def __repr__(self):

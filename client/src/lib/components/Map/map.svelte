@@ -3,7 +3,7 @@
     import {useTexture, interactivity, SVG} from '@threlte/extras';
     import WorldMap from '$lib/assets/The_Northern_Empire.png';
     import MapPinIcon from '$lib/assets/map-pin.svg';
-    import type {Marker} from "$lib/interfaces/marker";
+    import type {Marker, MarkerResponse} from "$lib/interfaces/marker";
 
     let {marker_data} = $props();
     let existing_markers = $state(marker_data);
@@ -18,7 +18,7 @@
     let cameraX = $state(0);
     let cameraY = $state(0);
 
-    let markers = $state([{}]);
+    let markers = $state([]);
 
     const {renderer} = useThrelte();
 
@@ -53,7 +53,12 @@
         } as Marker;
         markers.push(foo);
 
-        const response = await fetch(`http://localhost:5000/markers?$posX=${posX}&posY=${posY}`, {method: 'POST'});
+        const params = new URLSearchParams({
+            pos_x: e.point.x,
+            pos_y: e.point.y
+        }).toString();
+
+        const response = await fetch("http://localhost:5000/markers?" + params, {method: 'POST'});
 
         if (!response.ok) {
            console.log(response);
@@ -62,13 +67,19 @@
 
     $effect(() => {
         if (existing_markers) {
-            existing_markers.markers.forEach((marker: Marker) => {
-                if (!markers.includes(marker)) {
-                    markers.push(marker);
+            existing_markers.markers.forEach((marker: MarkerResponse) => {
+                const new_marker = {
+                    id: marker.id,
+                    posX: marker.pos_x,
+                    posY: marker.pos_y,
+                } as Marker;
+
+                if (!markers.includes(new_marker)) {
+                    markers.push(new_marker);
                 }
             });
         }
-    })
+    });
 </script>
 
 <T.PerspectiveCamera
@@ -99,7 +110,7 @@
     </T.Mesh>
 {/await}
 
-{#each markers as marker (`${marker.posX}, ${marker.posY}`)}
+{#each markers as marker (marker.id)}
     <T.Mesh>
         <SVG
             src={MapPinIcon}

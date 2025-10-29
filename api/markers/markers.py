@@ -15,14 +15,14 @@ def get_markers():
 
 @bp.route('/', methods=['POST'])
 def add_marker():
-    pos_x = request.args.get('posX')
-    pos_y = request.args.get('posY')
+    pos_x = request.args.get('pos_x')
+    pos_y = request.args.get('pos_y')
 
     if not (pos_x and pos_y):
-        return Response("Missing posX or posY parameters", status=400)
+        return Response("Missing pos_x or pos_y parameters", status=400)
 
     existing_marker = Marker.query.filter(
-        Marker.posX == pos_x or Marker.posY == pos_y
+        Marker.pos_x == pos_x or Marker.pos_y == pos_y
     ).first()
 
     if existing_marker:

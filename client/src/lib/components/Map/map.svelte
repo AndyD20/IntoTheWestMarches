@@ -46,12 +46,18 @@
         dragging = false;
     };
 
-    const handleOnDblClick = (e) => {
+    const handleOnDblClick = async (e) => {
         let foo = {
             posX: e.point.x,
             posY: e.point.y,
         } as Marker;
         markers.push(foo);
+
+        const response = await fetch(`http://localhost:5000/markers?$posX=${posX}&posY=${posY}`, {method: 'POST'});
+
+        if (!response.ok) {
+           console.log(response);
+        }
     };
 
     $effect(() => {

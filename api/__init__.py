@@ -1,11 +1,6 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from extensions import db
 from api.markers import bp as markers_bp
-
-
-# Globally accessible libraries
-db = SQLAlchemy()
-
 
 def init_app():
     """Initialize the core application."""
@@ -18,5 +13,7 @@ def init_app():
     with app.app_context():
         # Register Blueprints
         app.register_blueprint(markers_bp, url_prefix='/markers')
+
+        db.create_all()
 
         return app

@@ -61,23 +61,28 @@
         const response = await fetch("http://localhost:5000/markers?" + params, {method: 'POST'});
 
         if (!response.ok) {
-           console.log(response);
+            console.log(response);
         }
     };
 
     $effect(() => {
         if (existing_markers) {
-            existing_markers.markers.forEach((marker: MarkerResponse) => {
-                const new_marker = {
-                    id: marker.id,
-                    posX: marker.pos_x,
-                    posY: marker.pos_y,
-                } as Marker;
+            const existing_ids = new Set(markers.map(m => m.id));
 
-                if (!markers.includes(new_marker)) {
-                    markers.push(new_marker);
+            const markers_to_add = [];
+            existing_markers.markers.forEach((marker: MarkerResponse) => {
+                if (!existing_ids.has(marker.id)) {
+                    markers_to_add.push({
+                        id: marker.id,
+                        posX: marker.pos_x,
+                        posY: marker.pos_y,
+                    });
                 }
             });
+
+            if (markers_to_add.length > 0) {
+                markers.push(...markers_to_add);
+            }
         }
     });
 </script>

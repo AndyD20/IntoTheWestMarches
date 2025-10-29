@@ -5,16 +5,20 @@ def get_markers():
     return {
         "markers": [
             {
-                "posX": 100,
-                "posY": 100,
+                "posX": 0.93,
+                "posY": -0.77,
             },
             {
-                "posX": 200,
-                "posY": 200,
+                "posX": -1.4,
+                "posY": -0.95,
             },
             {
-                "posX": 300,
-                "posY": 300,
+                "posX": 0.27,
+                "posY": 0.41,
+            },
+            {
+                "posX": -2.84,
+                "posY": 0.71,
             }
         ]
     }

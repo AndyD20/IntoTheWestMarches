@@ -6,6 +6,7 @@
     import type {Marker} from "$lib/interfaces/marker";
 
     let {marker_data} = $props();
+    let existing_markers = $state(marker_data);
 
     interactivity();
 
@@ -54,7 +55,13 @@
     };
 
     $effect(() => {
-        console.log(marker_data);
+        if (existing_markers) {
+            existing_markers.markers.forEach((marker: Marker) => {
+                if (!markers.includes(marker)) {
+                    markers.push(marker);
+                }
+            });
+        }
     })
 </script>
 

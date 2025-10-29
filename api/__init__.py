@@ -1,6 +1,6 @@
 from flask import Flask
-from extensions import db
-from api.markers import bp as markers_bp
+from .extensions import db
+from .markers import bp as markers_bp
 
 def init_app():
     """Initialize the core application."""

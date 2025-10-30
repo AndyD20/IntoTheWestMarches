@@ -1,6 +1,7 @@
 from flask import Flask
 from .extensions import db
 from .markers import bp as markers_bp
+from flask_cors import CORS
 
 def init_app():
     """Initialize the core application."""
@@ -9,6 +10,7 @@ def init_app():
 
     # Initialize Plugins
     db.init_app(app)
+    CORS(app)
 
     with app.app_context():
         # Register Blueprints

@@ -1,4 +1,4 @@
-from flask import Response, request
+from flask import Response, request, make_response
 from api.extensions import db
 from api.markers import bp
 from api.models.marker import Marker
@@ -7,10 +7,10 @@ from api.models.marker import Marker
 @bp.route('/', methods=['GET'])
 def get_markers():
     markers = Marker.query.all()
-    # Use a list comprehension to call .to_dict() on each marker
-    return {
+
+    return make_response({
         "markers": [marker.to_dict() for marker in markers]
-    }
+    }, 200)
 
 
 @bp.route('/', methods=['POST'])

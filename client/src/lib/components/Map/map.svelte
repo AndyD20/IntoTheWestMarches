@@ -3,7 +3,7 @@
     import {useTexture, interactivity, SVG} from '@threlte/extras';
     import WorldMap from '$lib/assets/The_Northern_Empire.png';
     import MapPinIcon from '$lib/assets/map-pin.svg';
-    import type {Marker, MarkerResponse} from "$lib/interfaces/marker";
+    import type {Marker, MarkerResponse} from '$lib/interfaces/marker';
 
     let {marker_data} = $props();
     let existing_markers = $state(marker_data);
@@ -18,7 +18,7 @@
     let cameraX = $state(0);
     let cameraY = $state(0);
 
-    let markers = $state([]);
+    let markers = $state<Marker[]>([]);
 
     const {renderer} = useThrelte();
 
@@ -28,11 +28,11 @@
         }
     });
 
-    const zoom = (e) => {
+    const zoom = (e: any) => {
         distance += e.nativeEvent.deltaY / 1000;
     };
 
-    const handleDrag = (e) => {
+    const handleDrag = (e: any) => {
         if (dragging) {
             cameraX += (posX - e.nativeEvent.clientX) / 500;
             cameraY -= (posY - e.nativeEvent.clientY) / 500;
@@ -46,10 +46,10 @@
         dragging = false;
     };
 
-    const handleOnDblClick = async (e) => {
+    const handleOnDblClick = async (e: any) => {
         let foo = {
             posX: e.point.x,
-            posY: e.point.y,
+            posY: e.point.y
         } as Marker;
         markers.push(foo);
 
@@ -58,7 +58,7 @@
             pos_y: e.point.y
         }).toString();
 
-        const response = await fetch("http://localhost:5000/markers?" + params, {method: 'POST'});
+        const response = await fetch('http://localhost:5000/markers?' + params, {method: 'POST'});
 
         if (!response.ok) {
             console.log(response);
@@ -67,15 +67,15 @@
 
     $effect(() => {
         if (existing_markers) {
-            const existing_ids = new Set(markers.map(m => m.id));
+            const existing_ids = new Set(markers.map((m) => m.id));
 
-            const markers_to_add = [];
+            const markers_to_add = [] as Marker[];
             existing_markers.markers.forEach((marker: MarkerResponse) => {
                 if (!existing_ids.has(marker.id)) {
                     markers_to_add.push({
                         id: marker.id,
                         posX: marker.pos_x,
-                        posY: marker.pos_y,
+                        posY: marker.pos_y
                     });
                 }
             });
@@ -98,8 +98,8 @@
 
 {#await useTexture(WorldMap) then texture}
     <T.Mesh
-        onwheel={(e) => zoom(e)}
-        onpointerdown={(e) => {
+        onwheel={(e: any) => zoom(e)}
+        onpointerdown={(e: any) => {
 			dragging = true;
 			posX = e.nativeEvent.clientX;
 			posY = e.nativeEvent.clientY;
@@ -107,7 +107,7 @@
         onpointerup={endDrag}
         onpointerleave={endDrag}
         onpointerout={endDrag}
-        onpointermove={(e) => handleDrag(e)}
+        onpointermove={(e: any) => handleDrag(e)}
         ondblclick={handleOnDblClick}
     >
         <T.BoxGeometry args={[7, 4, 0]}/>
@@ -126,4 +126,3 @@
         />
     </T.Mesh>
 {/each}
-

@@ -21,12 +21,20 @@ class Marker(db.Model):
         nullable=False
     )
 
+    type = db.Column(
+        db.String(50),
+        index=False,
+        unique=False,
+        nullable=False
+    )
+
     def to_dict(self):
         """Serializes marker data to a dictionary"""
         return {
             'id': self.id,
             'pos_x': self.pos_x,
-            'pos_y': self.pos_y
+            'pos_y': self.pos_y,
+            'type': self.type
         }
 
     def __repr__(self):

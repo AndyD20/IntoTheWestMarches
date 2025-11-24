@@ -17,22 +17,24 @@ def get_markers():
 def add_marker():
     pos_x = request.args.get('pos_x')
     pos_y = request.args.get('pos_y')
+    type = request.args.get('type')
 
-    if not (pos_x and pos_y):
-        return Response("Missing pos_x or pos_y parameters", status=400)
+    if not (pos_x and pos_y and type):
+        return Response("Missing pos_x or pos_y or type parameters", status=400)
 
     existing_marker = Marker.query.filter(
-        Marker.pos_x == pos_x or Marker.pos_y == pos_y
+        Marker.pos_x == pos_x and Marker.pos_y == pos_y and Marker.type == type
     ).first()
 
     if existing_marker:
-        return Response("Markers already exist", status=409)
+        return Response("Marker already exists", status=409)    
 
     new_marker = Marker(
         pos_x=pos_x,
-        pos_y=pos_y
+        pos_y=pos_y,
+        type=type
     )
     db.session.add(new_marker)
     db.session.commit()
 
-    return Response(status=201)
+    return make_response(status=201)
